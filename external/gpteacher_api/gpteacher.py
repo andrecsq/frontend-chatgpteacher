@@ -3,7 +3,7 @@ import requests
 from os import getenv
 from dotenv import load_dotenv
 
-from external.gpteacher_api.constants import Endpoint
+from external.gpteacher_api.constants import Endpoint, Method
 
 class GPTeacher:
     def __init__(self) -> None:
@@ -18,18 +18,18 @@ class GPTeacher:
 
     def get_correction(self, data: dict):
 
-        response_text = self.request_from_api(Endpoint.CORRECTION, data=data)
+        response_text = self.request_from_api(Endpoint.CORRECTION, method=Method.POST, data=data)
         
         return response_text
     
 
-    def request_from_api(self, endpoint: Endpoint, data: dict = {}):
+    def request_from_api(self, endpoint: Endpoint, method: str = Method.GET, data: dict = {}):
 
         full_url = self.base_url + "/" + endpoint.value
 
         print(f"url requested: {full_url}")
 
-        response = requests.get(full_url, json=data)
+        response = requests.request(full_url, method=method, json=data)
 
         response.raise_for_status()
 
