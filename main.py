@@ -1,23 +1,28 @@
-from typer import Typer, Argument
+from typer import Typer
 
 from external.gpteacher_api.gpteacher import GPTeacher
 
 app = Typer()
 
+gpteacher = GPTeacher()
+
 
 @app.command()
 def run():
-    print("Running!")
-    sentece = GPTeacher.get_sentence()
-    ok = input("> ")
-    print("ok")
+    sentence_to_translate = gpteacher.get_sentence()
+    print(f"Translate this Sentence: {sentence_to_translate}")
+
+    translation_attempt = input("> ")
+
+    correction = GPTeacher.get_correction(translation_attempt=translation_attempt)
+    print("Correction:")
+    print(correction)
     
 @app.command()
-def sentences(
-    quant: int = Argument(10, help="The number of sentences to print")
-):
-    response = ", ".join([str(i) for i in range(quant)])
-    print(f"Counting {response}")
+def sentence():
+    sentence_to_translate = gpteacher.get_sentence()
+
+    print(sentence_to_translate)
 
 
 if __name__ == "__main__":
