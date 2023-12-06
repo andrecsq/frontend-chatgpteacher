@@ -4,8 +4,8 @@ from typer import Typer
 from rich import print
 from rich.prompt import Prompt
 
-from external.gpteacher_api.gpteacher import GPTeacher
-from external.objects import CorrectionPayload
+from domain.api.gpteacher import GPTeacher
+from domain.objects import CorrectionPayload
 from domain.style import print_full_table
 
 app = Typer()
@@ -18,9 +18,11 @@ def run():
     while True:
         print()
 
-        sentence_to_translate = gpteacher.get_sentence()
+        sentence_response = gpteacher.get_sentence()
+        sentence_response_dict = json.loads(sentence_response)
+        sentence_to_translate = sentence_response_dict["sentence"]
 
-        translation_attempt = Prompt.ask(f"🔠 Translate [b]{sentence_to_translate}[/b] to [red]English[/red]")
+        translation_attempt = Prompt.ask(f"🔠 Translate \"[b]{sentence_to_translate}[/b]\" to [red]English[/red]")
 
         payload = CorrectionPayload(
             sentence_to_translate=sentence_to_translate,

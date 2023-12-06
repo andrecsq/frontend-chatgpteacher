@@ -3,8 +3,8 @@ import requests
 from os import getenv
 from dotenv import load_dotenv
 
-from external.gpteacher_api.constants import Endpoint, Method
-from external.objects import CorrectionPayload
+from domain.api.constants import Endpoint, Method
+from domain.objects import CorrectionPayload
 
 class GPTeacher:
     def __init__(self) -> None:
