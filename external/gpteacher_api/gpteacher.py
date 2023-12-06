@@ -4,6 +4,7 @@ from os import getenv
 from dotenv import load_dotenv
 
 from external.gpteacher_api.constants import Endpoint, Method
+from external.objects import CorrectionPayload
 
 class GPTeacher:
     def __init__(self) -> None:
@@ -12,24 +13,33 @@ class GPTeacher:
 
     def get_sentence(self):
 
-        response_text = self.request_from_api(Endpoint.SENTENCE)
+        response = self.request_from_api(Endpoint.SENTENCE.value)
+
+        print(response)
         
-        return response_text
+        return response.text
 
-    def get_correction(self, data: dict):
+    def post_correction(self, payload: CorrectionPayload):
 
-        response_text = self.request_from_api(Endpoint.CORRECTION, method=Method.POST, data=data)
+        response_text = self.request_from_api(
+            Endpoint.CORRECTION.value, 
+            method=Method.POST.value, 
+            data=payload
+        )
         
         return response_text
     
 
-    def request_from_api(self, endpoint: Endpoint, method: str = Method.GET, data: dict = {}):
+    def request_from_api(self, endpoint: str, method: str = Method.GET.value, data: dict = {}):
 
-        full_url = self.base_url + "/" + endpoint.value
+        full_url = self.base_url + "/" + endpoint
 
-        print(f"url requested: {full_url}")
+        print("args:")
+        print(method, full_url, data)
 
-        response = requests.request(full_url, method=method, json=data)
+        response = requests.request(method, full_url, json=data)
+
+        print(response)
 
         response.raise_for_status()
 
