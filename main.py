@@ -8,7 +8,7 @@ from domain.api.gpteacher import GPTeacher
 from domain.objects import CorrectionPayload
 from domain.style import print_full_table
 
-app = Typer()
+app = Typer(add_completion=False)
 gpteacher = GPTeacher()
 
 
