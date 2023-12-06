@@ -37,6 +37,8 @@ def run():
             print("\n Congratulations! The translation is [b][green]correct[/green][/b]!")
         else:
             print_full_table(correction_dict['errors'])
+            print()
+            print(f" Corrected translation: [b]{correction_dict['corrected_translation']}[/b]")
     
 @app.command()
 def sentence():
