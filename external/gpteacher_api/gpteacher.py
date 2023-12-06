@@ -13,18 +13,16 @@ class GPTeacher:
 
     def get_sentence(self):
 
-        response = self.request_from_api(Endpoint.SENTENCE.value)
-
-        print(response)
+        response_text = self.request_from_api(Endpoint.SENTENCE.value)
         
-        return response.text
+        return response_text
 
     def post_correction(self, payload: CorrectionPayload):
 
         response_text = self.request_from_api(
             Endpoint.CORRECTION.value, 
             method=Method.POST.value, 
-            data=payload
+            data=payload.model_dump()
         )
         
         return response_text
@@ -34,12 +32,7 @@ class GPTeacher:
 
         full_url = self.base_url + "/" + endpoint
 
-        print("args:")
-        print(method, full_url, data)
-
         response = requests.request(method, full_url, json=data)
-
-        print(response)
 
         response.raise_for_status()
 
